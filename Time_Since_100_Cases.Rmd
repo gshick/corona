@@ -1,4 +1,32 @@
+---
+title: "Time Since 100 Cases"
+author: "Greg Shick"
+date: "April 2, 2020"
+output: html_document
+runtime: shiny
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+## Inputs and Outputs
+
+You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
+
+```{r eruptions, echo=FALSE}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20)
+)
+
+renderPlot({
+
+  
 library(RCurl)
 library(dplyr)
 library(reshape2)
@@ -65,14 +93,5 @@ p <- ggplot(data=c5, aes(x=days_since_100, y=run_con, color=country)) +
   labs(title = "Total confirmed cases of COVID-19",
        subtitle = "The number of confirmed cases is lower than the number of total cases. The main reason for this is limited testing.",
        x="Days since the 100th total confirmed case", y="Total Confirmed Cases")
-
-anim <- p + 
-  transition_states(days_since_100,
-                    transition_length = 2,
-                    state_length = 1)
-
-anim
-    
-
-  
-  
+})
+```
